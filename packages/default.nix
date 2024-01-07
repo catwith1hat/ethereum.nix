@@ -7,6 +7,7 @@
     self',
     pkgs,
     pkgsUnstable,
+    pkgs_2305,
     system,
     ...
   }: let
@@ -16,10 +17,10 @@
   in {
     packages = platformPkgs system rec {
       # Consensus Clients
-      lighthouse = callPackage ./clients/consensus/lighthouse {inherit foundry;};
+      lighthouse = pkgs_2305.callPackage ./clients/consensus/lighthouse {inherit foundry;};
       prysm = callPackage ./clients/consensus/prysm {inherit bls blst;};
       teku = callPackage ./clients/consensus/teku {};
-      nimbus = callPackageUnstable ./clients/consensus/nimbus {};
+      #      nimbus = callPackage ./clients/consensus/nimbus {};
 
       # Execution Clients
       erigon = callPackage ./clients/execution/erigon {};
@@ -27,7 +28,7 @@
       geth = callPackage ./clients/execution/geth {};
       geth-sealer = callPackage ./clients/execution/geth-sealer {};
       nethermind = callPackage ./clients/execution/nethermind {};
-      reth = callPackageUnstable ./clients/execution/reth {};
+      reth = callPackage ./clients/execution/reth {};
 
       # Signers
       web3signer = callPackage ./signers/web3signer {};
@@ -47,10 +48,16 @@
 
       # DVT
       charon = callPackage ./dvt/charon {inherit bls mcl;};
-      ssvnode = callPackage ./dvt/ssvnode {inherit bls mcl;};
+      ssvnode = callPackage ./dvt/ssvnode {
+        inherit bls mcl;
+        # SSV vendors quic-go in a version that doesn't build
+        #        > vendor/github.com/quic-go/quic-go/internal/qtls/go121.go:5:13: cannot use "The version of quic-go you're using can't be built on Go 1.21 yet. For more details, please see https://github.com/quic-go/quic-go/wiki/quic-go-and-Go-versions." (untyped string constant "The version of quic-go you're using can't be built on Go 1.21 yet. F...) as int value in variable declaration
+
+        buildGoModule = pkgs.buildGo120Module;
+      };
 
       # Utils
-      eigenlayer = callPackageUnstable ./utils/eigenlayer {};
+      eigenlayer = callPackage ./utils/eigenlayer {};
       eth2-testnet-genesis = callPackage ./utils/eth2-testnet-genesis {inherit bls;};
       eth2-val-tools = callPackage ./utils/eth2-val-tools {inherit bls mcl;};
       ethdo = callPackage ./utils/ethdo {inherit bls mcl;};
@@ -72,7 +79,7 @@
       vscode-plugin-consensys-vscode-solidity-visual-editor = callPackage ./editors/vscode/extensions/consensys.vscode-solidity-auditor {};
 
       # Solidity
-      slither = callPackageUnstable ./solidity/analyzers/slither {};
+      slither = callPackage ./solidity/analyzers/slither {};
       wake = callPackageUnstable ./solidity/frameworks/wake {};
 
       # Libs
