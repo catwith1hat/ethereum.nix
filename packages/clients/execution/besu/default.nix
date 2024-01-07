@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
 
   src = fetchurl {
     url = "https://hyperledger.jfrog.io/hyperledger/${pname}-binaries/${pname}/${version}/${pname}-${version}.tar.gz";
-    hash = "sha256-c8g0zzLMu+JV19jMfKXR6w34QwuRFJNcjc86Z1sqy8I=";
+    hash = "sha256-jjjp/QwW4EmqMk7/yW+ewx3AboLqSZXp3XXVcTlGZ68=";
   };
 
   nativeBuildInputs = [makeWrapper];
