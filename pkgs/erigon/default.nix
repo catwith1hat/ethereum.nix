@@ -15,7 +15,7 @@ buildGoModule rec {
     fetchSubmodules = true;
   };
 
-  vendorHash = "sha256-DOsM0G0idAHUsil4KNkmghq3VZwVE1ub6fAvRnELHn0=";
+  vendorHash = "sha256-BpZ9nqf3NXGt3ocGIHAYrEakKH7493Nc1GIiYY+BH7s=";
   proxyVendor = true;
 
   # Silkworm's .so fails to find libgmp when linking
